@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foodie - Online Food Ordering</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif
+}
+
+body{
+    background:#fff5f5;
+    color:#222
+}
+
+header{
+    background:#d90429;
+    color:white;
+    padding:18px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.logo{
+    font-size:27px;
+    font-weight:bold
+}
+
+.cart{
+    background:white;
+    color:#d90429;
+    padding:10px 18px;
+    border-radius:25px;
+    font-weight:bold
+}
+
+.container{
+    padding:30px 6%
+}
+
+.hero{
+    background:linear-gradient(120deg,#d90429,#ef233c);
+    color:white;
+    padding:35px;
+    border-radius:20px;
+    margin-bottom:25px
+}
+
+.hero h1{
+    font-size:35px;
+    margin-bottom:10px
+}
+
+.hero p{
+    font-size:17px
+}
+
+.categories{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+    flex-wrap:wrap
+}
+
+.categories button{
+    border:0;
+    background:white;
+    color:#d90429;
+    padding:10px 20px;
+    border-radius:22px;
+    cursor:pointer;
+    box-shadow:0 2px 8px #ddd;
+    font-weight:bold
+}
+
+.categories button:hover{
+    background:#d90429;
+    color:white
+}
+
+.menu{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:20px
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 4px 15px #ddd;
+    transition:.2s
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 20px #ccc
+}
+
+.food-img{
+    width:100%;
+    height:150px;
+    object-fit:cover
+}
+
+.info{
+    padding:15px
+}
+
+.info h3{
+    margin-bottom:7px
+}
+
+.info p{
+    font-size:13px;
+    color:#777;
+    margin-bottom:10px
+}
+
+.bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.price{
+    font-weight:bold;
+    color:#d90429;
+    font-size:18px
+}
+
+.add{
+    background:#d90429;
+    color:white;
+    border:0;
+    padding:8px 13px;
+    border-radius:10px;
+    cursor:pointer
+}
+
+.add:hover{
+    background:#a60320
+}
+
+#cartBox{
+    margin-top:30px;
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 4px 15px #ddd
+}
+
+#cartItems div{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #eee
+}
+
+#cartItems button{
+    border:0;
+    background:none;
+    cursor:pointer
+}
+
+.total{
+    text-align:right;
+    font-size:20px;
+    font-weight:bold;
+    margin-top:15px;
+    color:#d90429
+}
+
+.order{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    border:0;
+    background:#d90429;
+    color:white;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer
+}
+
+.order:hover{
+    background:#a60320
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🍔 Foodie</div>
+    <div class="cart">🛒 Cart: <span id="count">0</span></div>
+</header>
+
+<div class="container">
+
+    <div class="hero">
+        <h1>Delicious food, delivered fast! 🍕</h1>
+        <p>Choose your favourite food and order it in just a few clicks.</p>
+    </div>
+
+    <div class="categories">
+        <button onclick="filterFood('all')">All</button>
+        <button onclick="filterFood('Pizza')">🍕 Pizza</button>
+        <button onclick="filterFood('Burger')">🍔 Burger</button>
+        <button onclick="filterFood('Indian')">🍛 Indian</button>
+        <button onclick="filterFood('Dessert')">🍰 Dessert</button>
+    </div>
+
+    <div class="menu">
+
+        <div class="card" data-category="Pizza">
+            <img class="food-img"
+            src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500">
+            <div class="info">
+                <h3>Cheese Pizza</h3>
+                <p>Classic cheesy pizza with fresh toppings.</p>
+                <div class="bottom">
+                    <span class="price">₹249</span>
+                    <button class="add"
+                    onclick="addToCart('Cheese Pizza',249)">Add +</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-category="Burger">
+            <img class="food-img"
+            src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500">
+            <div class="info">
+                <h3>Classic Burger</h3>
+                <p>Juicy burger with cheese and crispy veggies.</p>
+                <div class="bottom">
+                    <span class="price">₹179</span>
+                    <button class="add"
+                    onclick="addToCart('Classic Burger',179)">Add +</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-category="Indian">
+            <img class="food-img"
+            src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500">
+            <div class="info">
+                <h3>Paneer Tikka</h3>
+                <p>Spicy grilled paneer with Indian flavours.</p>
+                <div class="bottom">
+                    <span class="price">₹199</span>
+                    <button class="add"
+                    onclick="addToCart('Paneer Tikka',199)">Add +</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-category="Indian">
+            <img class="food-img"
+            src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500">
+            <div class="info">
+                <h3>Veg Thali</h3>
+                <p>Complete Indian meal with delicious sides.</p>
+                <div class="bottom">
+                    <span class="price">₹229</span>
+                    <button class="add"
+                    onclick="addToCart('Veg Thali',229)">Add +</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-category="Dessert">
+            <img class="food-img"
+            src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500">
+            <div class="info">
+                <h3>Chocolate Cake</h3>
+                <p>Soft and creamy chocolate cake.</p>
+                <div class="bottom">
+                    <span class="price">₹149</span>
+                    <button class="add"
+                    onclick="addToCart('Chocolate Cake',149)">Add +</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-category="Burger">
+            <img class="food-img"
+            src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=500">
+            <div class="info">
+                <h3>Chicken Burger</h3>
+                <p>Crispy chicken burger with fresh lettuce.</p>
+                <div class="bottom">
+                    <span class="price">₹219</span>
+                    <button class="add"
+                    onclick="addToCart('Chicken Burger',219)">Add +</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="cartBox">
+        <h2>🛒 Your Cart</h2>
+        <div id="cartItems">No items added yet.</div>
+        <div class="total">
+            Total: ₹<span id="total">0</span>
+        </div>
+        <button class="order" onclick="placeOrder()">Place Order</button>
+    </div>
+
+</div>
+
+<script>
+let cart=[];
+let total=0;
+
+function addToCart(name,price){
+    cart.push({name,price});
+    total+=price;
+    document.getElementById("count").innerText=cart.length;
+    showCart();
+}
+
+function showCart(){
+    let box=document.getElementById("cartItems");
+    box.innerHTML="";
+
+    cart.forEach((item,index)=>{
+        box.innerHTML+=`
+        <div>
+            <span>${item.name}</span>
+            <span>
+                ₹${item.price}
+                <button onclick="removeItem(${index})">❌</button>
+            </span>
+        </div>`;
+    });
+
+    document.getElementById("total").innerText=total;
+}
+
+function removeItem(index){
+    total-=cart[index].price;
+    cart.splice(index,1);
+
+    document.getElementById("count").innerText=cart.length;
+
+    if(cart.length==0){
+        document.getElementById("cartItems").innerText=
+        "No items added yet.";
+    }else{
+        showCart();
+    }
+
+    document.getElementById("total").innerText=total;
+}
+
+function filterFood(category){
+    document.querySelectorAll(".card").forEach(card=>{
+        card.style.display=
+        category=="all" || card.dataset.category==category
+        ?"block":"none";
+    });
+}
+
+function placeOrder(){
+    if(cart.length==0){
+        alert("Please add some food to your cart!");
+    }else{
+        alert("🎉 Order placed successfully! Total: ₹"+total);
+    }
+}
+</script>
+
+</body>
+</html>
